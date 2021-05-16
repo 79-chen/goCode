@@ -8,6 +8,9 @@ func main() {
 	fmt.Println()
 	testArray()
 	testSlice()
+	testPointer()
+	testMap()
+	function()
 
 }
 func testArray() {
@@ -133,11 +136,91 @@ func testSlice() {
 	fmt.Println(sscc)
 
 	//练习
-	var test []int = make([]int, 5, 10)
+	var test = make([]int, 5, 10)
 	//长度5的默认零值
 	for i := 0; i < 9; i++ {
 		test = append(test, i)
 	}
 	fmt.Println(test, cap(test))
 
+}
+func testPointer() {
+	//取地址符：& 获得变量的指针变量;
+	//根据地址取值：* 对指针变量取值，获得指针变量指向的原变量的值
+	a := 10
+	n := &a
+	fmt.Println(n)
+	fmt.Printf("类型：%T\n", n) //int类型的指针
+	p := *n                  //指针变量名为n
+	fmt.Println(p)
+
+	//new函数
+	var a1 *int
+	fmt.Println(a1)   //空指针，没有指向内存空间
+	var a2 = new(int) //开辟一块存放对应类型变量的地址，指针指向的变量默认零值
+	fmt.Println(*a2)
+	fmt.Println(a2)
+	*a2 = 100
+	fmt.Println(a2)
+	fmt.Println(*a2)
+
+	/*
+		make 和 new 都是用来申请内存的
+		new 用于基本数据类型，返回值为对应类型的指针，内存对应的值为类型零值
+		make 用于map slice channel三种数据类型的初始化，返回值为对应的类型（引用类型本身）
+	*/
+}
+func testMap() {
+	var m1 = make(map[string]int, 10)
+	//引用数据类型，初始化（开辟内存空间）后才能使用（避免空指针异常）
+	//估算好map的容量，避免在程序运行期间再动态扩容
+	m1["chen"] = 10
+	m1["shu"] = 11
+	m1["peng"] = 12
+	fmt.Println(m1["shu"])
+	fmt.Println(m1) //无顺序
+	fmt.Println(m1["chenshupeng"])
+	//如无对应key，返回对应类型的零值
+	value, ok := m1["chenshupeng"]
+	if !ok {
+		fmt.Println("查无此key！")
+	} else {
+		fmt.Println(value)
+	}
+
+	//遍历，key对应下标
+	for k, v := range m1 {
+		fmt.Println(k, v)
+	}
+	//删除
+	delete(m1, "chen")
+	fmt.Println(m1)
+
+	//元素类型为map的切片
+	var s1 = make([]map[int]string, 1, 10)
+	s1[0] = make(map[int]string, 2)
+	//map也需要初始化
+	s1[0][999] = "chenshupeng"
+	fmt.Println(s1[0][999]) //map的key对应的值
+	fmt.Println(s1[0])      //map数据类型
+	fmt.Println(s1)         //切片数据类型
+
+	//值为切片类型的map
+	var s2 = make(map[string][]int, 10)
+	s2["chenshupeng"] = []int{1, 2, 3}
+	fmt.Println(s2)
+}
+func function() {
+	fmt.Println()
+	// func f1(a1,a2,a3 int, b1,b2,b3 int) (ret int){
+	// 	ret = 10//ret已经声明
+	// 	return a+b
+	// }
+	// func f2(a int, b int) int{
+	// 	ret := 10//ret未声明
+	// 	return a+b
+	// }
+	// func f3(x int, y ...int) {
+	// 	fmt.Println()//y的类型是切片[]int
+	// }
 }
