@@ -11,7 +11,6 @@ func main() {
 	testPointer()
 	testMap()
 	function()
-
 }
 func testArray() {
 	//数组长度是数据类型的一部分，长度有限制
@@ -210,8 +209,10 @@ func testMap() {
 	s2["chenshupeng"] = []int{1, 2, 3}
 	fmt.Println(s2)
 }
-func function() {
-	fmt.Println()
+func function() func(int, int) string {
+	//函数也是一种类型
+	var f1 func(int, int)string
+	
 	// func f1(a1,a2,a3 int, b1,b2,b3 int) (ret int){
 	// 	ret = 10//ret已经声明
 	// 	return a+b
@@ -223,4 +224,24 @@ func function() {
 	// func f3(x int, y ...int) {
 	// 	fmt.Println()//y的类型是切片[]int
 	// }
+
+	defer fmt.Println("end") //返回值赋值-->defer先进(状态完整)后出-->return
+	fmt.Println("next")
+
+	//匿名函数：函数内部无法声明带名字的函数
+	f2 := func() string {
+		return "ohhhhhhhh!!"
+	}
+	fmt.Println(f2())
+	//只用一次的匿名函数
+	func(a, b int) {
+		fmt.Println(a + b)
+	}(1, 2)
+
+	//闭包内在要求：
+	//1.返回值可以是函数
+	//2.返回的函数存在外层函数的变量
+	//先外层入参返回内层函数，再内层函数入参输出
+
+	return f1
 }
